@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <!-- <link rel="stylesheet" href="./node_modules/bootstrap-icons/icons"> -->
+        <link rel="stylesheet" href="index.css">
+        <link rel="shortcut icon" href="https://blog.boostcollective.ca/hs-fs/hubfs/Spotify%20Logo%20PNG%20With%20Drop%20Shadow.png?width=400&name=Spotify%20Logo%20PNG%20With%20Drop%20Shadow.png" type="image/x-icon">
+    <title>Spotify - Web Player</title>
+</head>
+
+    <body> 
+        <header class="container-fluid">
+            
+            <div class="menu_side">
+                <div class="playlist">
+                    <h4 class="active"><a href="" class="nav-link" id="home-content"><i class="fa fa-home me-4"></i>Home</a></h4>
+                    <h4><a href="" class="nav-link" id="search-content"><i class="fa fa-search me-4"></i>Search</a></h4>
+                    
+                </div>
+
+                <div class="libray mt-2">
+                    <div class="library-head my-4 ">
+                    <div>
+                        <span><i class="fa-solid fa-book me-4"></i> Your Library</span>
+                    </div>
+                    <div class="">
+                        <span id="plus"><i class="fa-solid fa-plus mx-3"></i></span>
+                        <span><i class="fa-solid fa-arrow-right me-2"></i></span>
+                    </div>
+                    </div>
+                    
+                <div class="menu_song "  >
+                    
+                    <div class="mb-4" >
+                        <span class="ms-5">Recently Played</span><span id="recentlyPlayedMenu">
+                                                   <!-- Songs will be added here dynamically -->
+
+                                                </span>
+                        
+                    </div>
+                    <div class="">
+                    <span class="ms-5">Favorite List</span>
+                    <span id="fav-list">
+                        <!-- Songs will be added here dynamically -->
+
+
+                    </span>
+                </div>
+                </div>
+            </div>
+            </div>
+    
+    
+            <div class="song_side">
+                <span class="home-display d-none" >
+
+                <nav>
+                    <div class="arrow">
+                        <span><i class="fa-solid fa-chevron-left"></i></span>
+                           <span><i class="fa-solid fa-chevron-right"></i></span>
+                        
+                    </div>
+                    <div class="user">
+                        <!-- <img src="./assets/img/dhvani.jpg" alt=""> -->
+                        <span><a href="">Explore Premium</a></span>
+                        <span><a href=""><i class="fa-regular fa-circle-down"></i> Install App</a></span>
+                        <span class="logo"><i class="fa-regular fa-bell fa-nav"></i></span>
+
+                        <span class="logo"><i class="fa fa-user  "></i></span>
+                    </div>
+                </nav>
+    
+             <div class="main-content">
+                <div class="home-content  ms-5" style="margin-top: 120px;">
+                        <h1  id="greeting">Good Morning...</h1>
+            
+                </div>
+
+                <div class="popular_song ">
+                    <div class="h4">
+                        <h4>Popular Song</h4>
+                        <div class="btn_s">
+                            <i class="bi bi-arrow-left-short" id="pop_song_left"></i>
+                            <i class="bi bi-arrow-right-short" id="pop_song_right"></i>
+                        </div>
+                    </div>
+
+                    <div class="pop_song"> 
+                        <!-- This is the first container -->
+                        <!-- Songs will be added here dynamically -->
+                    </div>
+
+                </div>
+
+
+                <div class="popular_song">
+                    <div class="h4">
+                        <h4>Popular Album</h4>
+                        <div class="btn_s">
+                            <i class="bi bi-arrow-left-short" id="pop_art_left"></i>
+                            <i class="bi bi-arrow-right-short" id="pop_art_right"></i>
+                        </div>
+                    </div>
+
+                    <div class="pop_song"> <!-- This is the second container -->
+                        <!-- Songs will be added here dynamically -->
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="popular_artists">
+                    <div class="h4">
+                        <h4>Popular Artists</h4>
+                        <div class="btn_s">
+                            <i class="bi bi-arrow-left-short" id=""></i>
+                            <i class="bi bi-arrow-right-short" id=""></i>
+                        </div>
+                    </div>
+                    <div class="item Artists_bx">
+                        <li>
+                            <a href="arjit.html"><img src="./assets/img/arjit.jpg" alt=""></a>
+                        </li>
+                        <li>
+                            <img src="./assets/img/honey.jpg" alt="">
+                        </li>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </span>
+
+
+        <span class="search-display ">
+            <nav>
+                <div class="arrow">
+                    <span><i class="fa-solid fa-chevron-left"></i></span>
+                       <span><i class="fa-solid fa-chevron-right"></i></span>
+                    
+                </div>
+                <div class="search p-5" >
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search Music..." class="search-bar" id="search-bar">
+                    <div class="search_results" id="search_results">
+                               <!-- Search results will be added here dynamically -->
+                     </div>
+
+                </div> 
+                <div class="user">
+                    
+                    <span class="logo"><i class="fa-regular fa-bell fa-nav"></i></span>
+
+                    <span class="logo"><i class="fa fa-user  "></i></span>
+                </div>
+            </nav>
+            <div class="search-container" > 
+                <div style="margin-top: 120px;">
+                <div class="popular_song">
+                    <div class="h4">
+                        <h4>Popular Song</h4>
+                       
+                    </div>
+
+                    <div class="pop_song d-flex flex-wrap vh-100" > 
+                        <!-- This is the first container -->
+                        
+                        <!-- Songs will be added here dynamically -->
+                    </div>
+                </div>
+                </div>
+                </div>
+
+            </div>
+            
+        </span>
+
+
+
+
+
+             </div>
+    
+    
+
+    
+            <div class="master_play ">
+                <div class="wave" id="wave">
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                    <div class="wave1"></div>
+                </div>
+                <img src="./assets/img/26th.jpg" alt="" id="poster_master_play">
+                <h5 id="title">
+                    Vande mataram
+                    <div class="subtitle " id="song_subtitle">Bankim Chandra</div>
+                </h5>
+                <div class="icon">
+                    <i class="bi shuffle bi-music-note-beamed">next</i>
+                    <i class="bi bi-skip-start-fill" id="back"></i>
+                    <i class="bi bi-play-fill" id="masterPlay"></i>
+                    <i class="bi bi-skip-end-fill" id="next" accesskey="n"></i>
+                    <a href="" download id="download_music"><i class="bi bi-cloud-arrow-down-fill" ></i></a>
+                </div>
+                <span id="currentStart">0:00</span>
+                <div class="bar">
+                    <input type="range" id="seek" min="0" max="100">
+                    <div class="bar2" id="bar2"></div>
+                    <div class="dot"></div>
+                </div>
+                <span id="currentEnd">0:30</span>
+                <div class="vol">
+                    <i class="bi bi-volume-up-fill" id="vol_icon"></i>
+                    <input type="range" min="0" max="100" id="vol">
+                    <div class="vol_bar"></div>
+                    <div class="dot" id="vol_dot"></div>
+                </div>
+            </div>
+</header>
+
+
+
+
+
+    <script type="module" src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
