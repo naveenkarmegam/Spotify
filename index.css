@@ -1,7 +1,7 @@
 :root {
     --white:#fff;
     --grey-white:#969697;
-    --green: #008000;
+    --green: #f8f8f8;
     --black: #000;
     --grey-black:#121213;
 }
@@ -201,7 +201,7 @@ header .master_play .wave {
 header .master_play .wave .wave1 {
   width: 3px;
   height: 10px;
-  background: var(--green);
+  background: green;
   margin-right: 3px;
   border-radius: 10px 10px 0px 0px;
   animation: unset;
@@ -326,9 +326,10 @@ header .master_play #currentStart {
 header .master_play .bar {
   position: relative;
   width: 43%;
-  height: 2px;
+  height: 4px;
   background: rgb(105, 105, 170, 0.1);
   margin: 0px 15px 0px 10px;
+
 }
 
 header .master_play .bar .bar2 {
@@ -342,15 +343,16 @@ header .master_play .bar .bar2 {
 
 header .master_play .bar .dot {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 10px;
+  height: 10px;
   background: var(--green);
   border-radius: 50%;
   left: 0%;
-  top: -1.5px;
+  /* bottom: 50%; */
+  top: -2.5px;
   transition: 1s linear;
 }
-
+/* 
 header .master_play .bar .dot::before {
   content: "";
   position: absolute;
@@ -361,7 +363,7 @@ header .master_play .bar .dot::before {
   left: -7px;
   top: -6.5px;
   box-shadow: inset 0px 0px 3px var(--green);
-}
+} */
 
 header .master_play .bar input {
   position: absolute;
@@ -369,6 +371,7 @@ header .master_play .bar input {
   top: -7px;
   left: 0;
   cursor: pointer;
+
   z-index: 1;
   /* transition: 3s linear; */
   opacity: 0;
@@ -377,7 +380,7 @@ header .master_play .bar input {
 header .master_play .vol {
   position: relative;
   width: 100px;
-  height: 2px;
+  height: 3px;
   background: rgb(105, 105, 170, 0.1);
   margin-left: 50px;
 }
@@ -411,15 +414,16 @@ header .master_play .vol .vol_bar {
 
 header .master_play .vol .dot {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 10px;
+  height: 10px;
   background: var(--green);
   border-radius: 50%;
   left: 100%;
-  top: -1.5px;
+  top: -3px;
   transition: 1s linear;
+  cursor: pointer;
 }
-
+/* 
 header .master_play .vol .dot::before {
   content: "";
   position: absolute;
@@ -430,7 +434,7 @@ header .master_play .vol .dot::before {
   left: -7px;
   top: -6.5px;
   box-shadow: inset 0px 0px 3px var(--green);
-}
+} */
 
 /* header .song_side::before {
     content: '';

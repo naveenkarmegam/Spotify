@@ -124,87 +124,86 @@ const songs = [
     id: "22",
     songName: "Kadhal Thantha Vali",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/22.webp",
   },
   {
     id: "23",
     songName: "Jayam-Jusitce",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/23.webp",
   },
   {
     id: "24",
     songName: "Kanna Moochi",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/24.webp",
   },
   {
     id: "25",
     songName: "Kavithaiyae theriuma",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/25.webp",
   },
   {
     id: "26",
     songName: "Kodi Kodi Minnial",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/26.webp",
   },
   {
     id: "27",
     songName: "Kadhal",
     subtitle: "Jayam",
-    poster: "assets/img/21.webp",
+    poster: "assets/img/27.webp",
   },
- 
+  {
+    id: "28",
+    songName: "Oh Baby Oh Baby ",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/28.webp",
+  },
+  {
+    id: "29",
+    songName: "Oru Naalaikkul ",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/29.webp",
+  },
+  {
+    id: "30",
+    songName: "Palakkattu Pakkathile ",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/30.webp",
+  },
+  {
+    id: "31",
+    songName: "The Person Is The Loser ",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/31.webp",
+  },
+  {
+    id: "32",
+    songName: "Venmegam Pennaga",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/32.webp",
+  },
+  {
+    id: "33",
+    songName: "Engeyo Partha",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/33.webp",
+  },
+  {
+    id: "34",
+    songName: "Nenjai Kasaki ",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/34.webp",
+  },
+  {
+    id: "35",
+    songName: "Penne Ennai Kodu",
+    subtitle: "Yaaradi Nee Mohini",
+    poster: "assets/img/35.webp",
+  },
 ];
 
-
-
 export { songs };
-
-
-
-// // search data start 
-// let search_results = document.getElementsByClassName('search_results')[0];
-
-// songs.forEach(element => {
-//     const { id, songName, poster } = element;
-//     // console.log(poster);
-//     let card = document.createElement('a');
-//     card.classList.add('card');
-//     card.href = "#" + id;
-//     card.innerHTML = `
-    
-//                             <div class="content">
-//                                 ${songName}
-//                             </div>
-//     `;
-//     search_results.appendChild(card);
-// });
-
-
-// let input = document.getElementsByTagName('input')[0];
-
-// input.addEventListener('keyup', () => {
-//     let input_value = input.value.toUpperCase();
-//     let items = search_results.getElementsByTagName('a');
-
-//     for (let index = 0; index < items.length; index++) {
-//         let as = items[index].getElementsByClassName('content')[0];
-//         let text_value = as.textContent || as.innerHTML;
-
-//         if (text_value.toUpperCase().indexOf(input_value) > -1) {
-//             items[index].style.display = "flex";
-//         } else {
-//             items[index].style.display = "none";
-//         }
-
-//         if (input.value == 0) {
-//             search_results.style.display = "none";
-//         } else {
-//             search_results.style.display = "";
-//         }
-
-//     }
-// })
