@@ -186,14 +186,8 @@ let title = document.getElementById('title');
 Array.from(document.getElementsByClassName('playListPlay')).forEach((e) => {
     e.addEventListener('click', (el) => {
         index = el.target.id;
-        if (music.paused || music.currentTime <= 0) {
             playSong(index);
-            console.log(el.target.classList.add('bi-pause-fill'));
-            el.target.classList.add('bi-pause-fill')
             songInfo(index)
-        } else {
-            pauseSong();
-        }
     });
 })
 
@@ -510,47 +504,49 @@ songs.forEach(element => {
         search_results.style.display = "none"; // Hide the search results
     });
 });
+let input = document.querySelector('input');
+let searchResults = document.querySelector('.search_results');
 
-let input = document.getElementsByTagName('input')[0];
+input.addEventListener('input', handleSearch);
 
-input.addEventListener('keyup', () => {
-    let input_value = input.value.toUpperCase();
-    let items = search_results.getElementsByTagName('a');
+function handleSearch() {
+    const inputValue = input.value.trim().toUpperCase();
+    const items = searchResults.querySelectorAll('a');
 
     Array.from(items).forEach((item) => {
-        let as = item.querySelector('.content');
-        let text_value = as.textContent || as.innerHTML;
-
-        if (text_value.toUpperCase().includes(input_value)) {
-            item.style.display = "flex";
-        } else {
-            item.style.display = "none";
-        }
-
-        search_results.style.display = input.value ? "" : "none";
+        const textValue = item.querySelector('.content').textContent.trim().toUpperCase();
+        item.style.display = textValue.includes(inputValue) ? 'flex' : 'none';
     });
-})
 
+    searchResults.style.display = inputValue ? '' : 'none';
 
-const search = document.querySelector("#search-bar");
-
-search.addEventListener('input', () => {
-    const searchText = search.value.toLowerCase();
-
+    // Additional search within the songArray
+    const searchText = inputValue.toLowerCase();
     songArray.forEach((container) => {
         const songsInContainer = container.querySelectorAll('.display-list');
         songsInContainer.forEach((song) => {
             const songName = song.querySelector('.card-title').textContent.toLowerCase();
-            if (songName.includes(searchText)) {
-                song.style.display = 'block';
-            } else {
-                song.style.display = 'none';
-
-            }
+            song.style.display = songName.includes(searchText) ? 'block' : 'none';
         });
     });
-});
-
+}
 
 
 // search data end 
+
+
+// // Add an event listener to the "show all" link
+// const showAllButton = document.getElementById('show-card');
+// showAllButton.addEventListener('click', toggleSongListDisplay);
+
+// // Function to toggle the display of song list items
+// function toggleSongListDisplay() {
+//     // Loop through each display list and toggle the display property
+//     getDisplayList.forEach((ele) => {
+//         ele.style.display = ele.style.display === 'block' ? 'none' : 'block';
+//     });
+
+//     // Update the text content of the "show all" link
+//     const buttonText = showAllButton.textContent === 'show all' ? 'show less' : 'show all';
+//     showAllButton.textContent = buttonText;
+// }
