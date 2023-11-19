@@ -1,42 +1,45 @@
 import { songs } from "./songs.js";
+
+//global varibales
 const music = new Audio('./assets/vande.mp3');
-// music.play();
 
+
+const songArray = [];
+let recentlyPlayed = [];
+let likedSongs = [];
+let index = 0;
+
+
+//Greeting
 const currentHour = new Date().getHours();
-const updateGreeting = () => {
-    const greetingElement = document.getElementById('greeting');
+const greetingText =
+    currentHour >= 5 && currentHour < 12
+        ? 'Good Morning'
+        : currentHour >= 12 && currentHour < 18
+            ? 'Good Afternoon'
+            : 'Good Evening';
+document.getElementById('greeting').textContent = greetingText;
 
-    if (currentHour >= 5 && currentHour < 12) {
-        greetingElement.textContent = 'Good Morning';
-    } else if (currentHour >= 12 && currentHour < 18) {
-        greetingElement.textContent = 'Good Afternoon';
-    } else {
-        greetingElement.textContent = 'Good Evening';
-    }
-};
-updateGreeting();
 
+//creating song list in our app
 const createSongItem = (song, index) => {
     return `
-  
-      <li class="songItem m-3">
+    <ul class ="display-list">
+      <li class="songItem">
         <div class="img_play">
           <img src="${song.poster}" alt="">
           <i class="bi like bi-suit-heart" id="${song.id}" data-index="${index}"></i>
           <i class="bi playListPlay bi-play-circle-fill" id="${song.id}" data-index="${index}"></i>
-        </div>
+          </div>
         <h5 class="card-title">${song.songName}<br>
           <div class="subtitle">${song.subtitle}</div>
         </h5>
-      </li>
+      </li> </ul>
      
     `;
 };
 
-
 const songListContainers = document.querySelectorAll('.pop_song');
-
- const songArray = []
 
 songs.forEach((song, index) => {
     const listItemBody = createSongItem(song, index);
@@ -44,39 +47,14 @@ songs.forEach((song, index) => {
         container.innerHTML += listItemBody;
         songArray.push(container)
     });
-    
+
 });
-// console.log(songArray);
 
 
 
 
 
-// const favList = document.getElementById('fav-list');
 
-const menuSongItem = (song, index) => {
-    return `
-    <ul class="fa-ul">
-      <li class="songItem">
-        <div class="img_play">
-          <img src="${song.poster}" alt="">
-          
-          <i class="bi play playListPlay bi-play-circle-fill" id="${song.id}" data-index="${index}"></i>
-        </div>
-        <h5 class="card-title">${song.songName}<br>
-          <div class="subtitle">${song.subtitle}</div>
-        </h5>
-      </li>
-      </ul>
-    `;
-};
-songs.map((song, index) => {
-    // const listItemMenu = menuSongItem(song, index);
-    // favList.innerHTML += listItemMenu;
-})
-
-
-let recentlyPlayed = [];
 const createRecentlyPlayedItem = (song) => {
     return `
         <ul>
@@ -95,13 +73,10 @@ const createRecentlyPlayedItem = (song) => {
 
 
 
+
 const updateRecentlyPlayedMenu = () => {
     const recentlyPlayedMenu = document.getElementById('recentlyPlayedMenu');
-
-    // Clear existing menu items
     recentlyPlayedMenu.innerHTML = '';
-
-    // Add recently played songs to the menu
     recentlyPlayed.forEach((songId) => {
         const song = songs.find(s => s.id == songId);
         if (song) {
@@ -109,36 +84,44 @@ const updateRecentlyPlayedMenu = () => {
             recentlyPlayedMenu.innerHTML += menuItem;
         }
     });
-
-    // Add click event listener to each recently played song
     document.querySelectorAll('.recently-played .playListPlay').forEach((playButton) => {
         playButton.addEventListener('click', (event) => {
             const index = event.target.getAttribute('data-index');
+            console.log(index);
             playSong(index);
         });
     });
 };
-// Event listener for clicking on a recently played song
-document.getElementById('recentlyPlayedMenu').addEventListener('click', (event) => {
+const recent = document.getElementById('recentlyPlayedMenu');
+
+recent.addEventListener('click', (event) => {
     const target = event.target;
     const playButton = target.closest('.playListPlay');
-    
+
     if (playButton) {
         const index = playButton.getAttribute('data-index');
         playSong(index);
+        playButton.classList.remove('bi-play-fill');
+        playButton.classList.add('bi-pause-fill');
+    } else {
+        pauseSong();
     }
 });
 
+const recentlyPlayedSong = (index) => {
+    const indexOfSong = recentlyPlayed.indexOf(index);
+    if (indexOfSong !== -1) {
+        recentlyPlayed.splice(indexOfSong, 1);
+    }
+    recentlyPlayed.unshift(index);
+    if (recentlyPlayed.length > 3) {
+        recentlyPlayed.pop();
+    }
+    updateRecentlyPlayedMenu();
+};
+
 
 const likeButtons = document.querySelectorAll('.like');
-
-likeButtons.forEach((liked) => {
-    liked.addEventListener('click', () => {
-        
-    });
-});
-
-let likedSongs = [];
 
 likeButtons.forEach((liked) => {
     liked.addEventListener('click', () => {
@@ -150,6 +133,7 @@ likeButtons.forEach((liked) => {
         if (isLiked) {
             liked.classList.remove('bi-suit-heart-fill');
             liked.classList.add('bi-suit-heart');
+            liked.classList.remove('text-danger');
             // Remove the song ID from the likedSongs array
             likedSongs = likedSongs.filter(id => id !== songId);
         } else {
@@ -185,160 +169,176 @@ const updateFavList = () => {
     document.querySelectorAll('#fav-list .playListPlay').forEach((playButton) => {
         playButton.addEventListener('click', (event) => {
             const index = event.target.getAttribute('data-index');
-            playSong(index);
+            if (music.paused || music.currentTime <= 0) {
+
+                playSong(index);
+            } else {
+                pauseSong();
+            }
         });
     });
+
 };
 
 
-
-// Function to play a song by index
-function playSong(index) {
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
-
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
-    });
-
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
-    });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    wave.classList.add('active1');
-    
-}
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const homeContent = document.querySelector('.home-display');
-    const searchContent = document.querySelector('.search-display');
-
-    const homeButton = document.getElementById('home-content');
-    const searchButton = document.getElementById('search-content');
-
-    // Function to show the home display
-    const showHomeDisplay = () => {
-        homeContent.classList.remove('d-none');
-        searchContent.classList.add('d-none');
-    };
-
-    // Function to show the search display
-    const showSearchDisplay = () => {
-        homeContent.classList.add('d-none');
-        searchContent.classList.remove('d-none');
-    };
-
-    // Initial setup - show home display by default
-    showHomeDisplay();
-    // showSearchDisplay()
-
-    // Event listeners for Home and Search buttons
-    homeButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        showHomeDisplay();
-    });
-
-    searchButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        showSearchDisplay();
-    });
-});
-
-
-
-
-
-
-
-//playon-control area...............
-let masterPlay = document.getElementById('masterPlay');
-let wave = document.getElementById('wave');
-
-masterPlay.addEventListener('click', () => {
-    if (music.paused || music.currentTime <= 0) {
-        music.play();
-        wave.classList.add('active1');
-        masterPlay.classList.remove('bi-play-fill');
-        masterPlay.classList.add('bi-pause-fill');
-    } else {
-        music.pause();
-        wave.classList.remove('active1');
-        masterPlay.classList.add('bi-play-fill');
-        masterPlay.classList.remove('bi-pause-fill');
-    }
-});
-
-const makeAllplays = () => {
-    Array.from(document.getElementsByClassName('playListPlay')).forEach((el) => {
-        el.classList.add('bi-play-circle-fill');
-        el.classList.remove('bi-pause-circle-fill');
-    })
-}
-const makeAllBackground = () => {
-    Array.from(document.getElementsByClassName('songItem')).forEach((el) => {
-        el.style.background = 'rgb(105, 105, 105, .0)';
-    })
-}
-
-let index = 0;
 let poster_master_play = document.getElementById('poster_master_play');
 let title = document.getElementById('title');
 Array.from(document.getElementsByClassName('playListPlay')).forEach((e) => {
     e.addEventListener('click', (el) => {
         index = el.target.id;
-       
-        music.src = `assets/audio/${index}.mp3`;
-        poster_master_play.src = `assets/img/${index}.webp`;
-        music.play();
-        masterPlay.classList.remove('bi-play-fill');
-        masterPlay.classList.add('bi-pause-fill');
-        
-
-
-
-
-        // Add the recently played song to the array
-        recentlyPlayed.unshift(index);
-
-        // Keep only the latest 5 recently played songs
-        if (recentlyPlayed.length > 5) { 
-            recentlyPlayed.pop();
+        if (music.paused || music.currentTime <= 0) {
+            playSong(index);
+            console.log(el.target.classList.add('bi-pause-fill'));
+            el.target.classList.add('bi-pause-fill')
+            songInfo(index)
+        } else {
+            pauseSong();
         }
-
-        // Update the recently played menu
-        updateRecentlyPlayedMenu();
-
-
-
-        let songTitles = songs.filter((ele) => {
-            return ele.id == index;
-        });
-
-        songTitles.forEach(item => {
-            let { songName, subtitle } = item;
-            title.innerHTML = `${songName} <div class="subtitle " id="song_subtitle">${subtitle}</div>`;
-            // song_subtitle.textContent = subtitle;
-
-            // download_music.setAttribute('download', songName);
-        });
-
-        makeAllBackground();
-        Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-        makeAllplays();
-        el.target.classList.remove('bi-play-circle-fill');
-        el.target.classList.add('bi-pause-circle-fill');
-        wave.classList.add('active1');
     });
 })
+
+// Function to play a song by index
+function playSong(index) {
+    recentlyPlayedSong(index);
+    music.src = `assets/audio/${index}.mp3`;
+    poster_master_play.src = `assets/img/${index}.webp`;
+    music.play();
+    masterPlay.classList.remove('bi-play-fill');
+    masterPlay.classList.add('bi-pause-fill');
+    songInfo(index)
+
+    wave.classList.add('active1');
+
+}
+
+// Function to pause the currently playing song
+function pauseSong() {
+    music.pause();
+    wave.classList.remove('active1');
+    masterPlay.classList.add('bi-play-fill');
+    masterPlay.classList.remove('bi-pause-fill');
+}
+
+function songInfo(index) {
+    let songTitles = songs.filter((ele) => {
+        return ele.id == index;
+    });
+    songTitles.forEach(item => {
+        let { songName, subtitle } = item;
+        title.innerHTML = `${songName} <div class="subtitle " id="song_subtitle">${subtitle}</div>`;
+    });
+}
+
+
+//playon-control area...............
+let masterPlay = document.getElementById('masterPlay');
+let wave = document.getElementById('wave');
+// Event listener for masterPlay button
+masterPlay.addEventListener('click', () => {
+    if (music.paused || music.currentTime <= 0) {
+
+        playSong(index);
+    } else {
+        pauseSong();
+    }
+});
+
+
+
+
+
+
+let back = document.getElementById('back');
+let next = document.getElementById('next');
+
+back.addEventListener('click', () => {
+    index -= 1;
+    if (index < 1) {
+        index = Array.from(document.getElementsByClassName('songItem')).length;
+    }
+    playSong(index);
+
+})
+
+next.addEventListener('click', () => {
+    index++;
+    if (index > Array.from(document.getElementsByClassName('songItem')).length) {
+        index = 1;
+    }
+    playSong(index);
+
+});
+
+
+let shuffle = document.getElementsByClassName('shuffle')[0];
+
+shuffle.addEventListener('click', () => {
+    let a = shuffle.innerHTML;
+
+    switch (a) {
+        case "next":
+            shuffle.classList.add('bi-arrow-repeat');
+            shuffle.classList.remove('bi-music-note-beamed');
+            shuffle.classList.remove('bi-shuffle');
+            shuffle.innerHTML = 'repeat';
+            break;
+
+        case "repeat":
+            shuffle.classList.remove('bi-arrow-repeat');
+            shuffle.classList.remove('bi-music-note-beamed');
+            shuffle.classList.add('bi-shuffle');
+            shuffle.innerHTML = 'random';
+            break;
+        case "random":
+            shuffle.classList.remove('bi-arrow-repeat');
+            shuffle.classList.add('bi-music-note-beamed');
+            shuffle.classList.remove('bi-shuffle');
+            shuffle.innerHTML = 'next';
+            break;
+    }
+});
+
+
+
+const next_music = () => {
+    if (index == songs.length) {
+        index = 1
+    } else {
+        index++;
+    }
+    playSong(index);
+
+
+}
+const repeat_music = () => playSong(index)
+
+const random_music = () => {
+    if (index == songs.length) {
+        index = 1
+    } else {
+        index = Math.floor((Math.random() * songs.length) + 1);
+    }
+    playSong(index);
+
+}
+
+
+music.addEventListener('ended', () => {
+    let b = shuffle.innerHTML;
+
+    switch (b) {
+        case 'repeat':
+            repeat_music();
+            break;
+        case 'next':
+            next_music();
+            break;
+        case 'random':
+            random_music();
+            break;
+    }
+})
+
 
 
 
@@ -416,64 +416,48 @@ vol.addEventListener('change', () => {
 });
 
 
-let back = document.getElementById('back');
-let next = document.getElementById('next');
 
-back.addEventListener('click', () => {
-    index -= 1;
-    if (index < 1) {
-        index = Array.from(document.getElementsByClassName('songItem')).length;
-    }
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
 
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const homeContent = document.querySelector('.home-display');
+    const searchContent = document.querySelector('.search-display');
+    const homeButton = document.getElementById('home-content');
+    const searchButton = document.getElementById('search-content');
+
+    // Function to show the home display
+    const showHomeDisplay = () => {
+        homeContent.classList.remove('d-none');
+        searchContent.classList.add('d-none');
+    };
+
+    // Function to show the search display
+    const showSearchDisplay = () => {
+        homeContent.classList.add('d-none');
+        searchContent.classList.remove('d-none');
+    };
+
+    // Initial setup - show home display by default
+    showHomeDisplay();
+    // showSearchDisplay()
+
+    // Event listeners for Home and Search buttons
+    homeButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        showHomeDisplay();
     });
 
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
+    searchButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        showSearchDisplay();
     });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    el.target.classList.remove('bi-play-circle-fill');
-    el.target.classList.add('bi-pause-circle-fill');
-    wave.classList.add('active1');
-})
-
-next.addEventListener('click', () => {
-    index++;
-    if (index > Array.from(document.getElementsByClassName('songItem')).length) {
-        index = 1;
-    }
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
-
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
-    });
-
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
-    });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    el.target.classList.remove('bi-play-circle-fill');
-    el.target.classList.add('bi-pause-circle-fill');
-    wave.classList.add('active1');
 });
+
+
+
 
 
 let pop_song_left = document.getElementById('pop_song_left');
@@ -482,10 +466,10 @@ let pop_song = document.getElementsByClassName('pop_song')[0];
 
 
 pop_song_right.addEventListener('click', () => {
-    pop_song.scrollLeft += 800;
+    pop_song.scrollLeft += 900;
 });
 pop_song_left.addEventListener('click', () => {
-    pop_song.scrollLeft -= 800;
+    pop_song.scrollLeft -= 900;
 });
 
 let pop_art_left = document.getElementById('pop_art_left');
@@ -495,10 +479,10 @@ let Artists_bx = document.getElementsByClassName('pop_song')[1];
 
 
 pop_art_right.addEventListener('click', () => {
-    Artists_bx.scrollLeft += 800;
+    Artists_bx.scrollLeft += 900;
 });
 pop_art_left.addEventListener('click', () => {
-    Artists_bx.scrollLeft -=800;
+    Artists_bx.scrollLeft -= 900
 });
 
 
@@ -509,18 +493,22 @@ pop_art_left.addEventListener('click', () => {
 let search_results = document.getElementsByClassName('search_results')[0];
 
 songs.forEach(element => {
-    const { id, songName, poster } = element;
+    const { id, songName } = element;
     // console.log(poster);
     let card = document.createElement('a');
     card.classList.add('card');
     card.href = "#" + id;
-    card.innerHTML = `
-
-                            <div class="content">
+    card.innerHTML = `<div class="content">
                                 ${songName}
                             </div>
     `;
     search_results.appendChild(card);
+    card.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent the default link behavior
+        const clickedValue = event.currentTarget.querySelector('.content').textContent;
+        input.value = clickedValue.trim(); // Set the input value to the clicked result
+        search_results.style.display = "none"; // Hide the search results
+    });
 });
 
 let input = document.getElementsByTagName('input')[0];
@@ -529,23 +517,18 @@ input.addEventListener('keyup', () => {
     let input_value = input.value.toUpperCase();
     let items = search_results.getElementsByTagName('a');
 
-    for (let index = 0; index < items.length; index++) {
-        let as = items[index].getElementsByClassName('content')[0];
+    Array.from(items).forEach((item) => {
+        let as = item.querySelector('.content');
         let text_value = as.textContent || as.innerHTML;
 
-        if (text_value.toUpperCase().indexOf(input_value) > -1) {
-            items[index].style.display = "flex";
+        if (text_value.toUpperCase().includes(input_value)) {
+            item.style.display = "flex";
         } else {
-            items[index].style.display = "none";
+            item.style.display = "none";
         }
 
-        if (input.value == 0) {
-            search_results.style.display = "none";
-        } else {
-            search_results.style.display = "";
-        }
-
-    }
+        search_results.style.display = input.value ? "" : "none";
+    });
 })
 
 
@@ -553,159 +536,21 @@ const search = document.querySelector("#search-bar");
 
 search.addEventListener('input', () => {
     const searchText = search.value.toLowerCase();
-    
+
     songArray.forEach((container) => {
-        const songsInContainer = container.querySelectorAll('.songItem');
-        
+        const songsInContainer = container.querySelectorAll('.display-list');
         songsInContainer.forEach((song) => {
             const songName = song.querySelector('.card-title').textContent.toLowerCase();
-            
             if (songName.includes(searchText)) {
                 song.style.display = 'block';
-                
             } else {
                 song.style.display = 'none';
-                song.style.margin = '0px'
-                song.style.padding = '0px'
+
             }
         });
     });
 });
 
+
+
 // search data end 
-
-
-
-let shuffle = document.getElementsByClassName('shuffle')[0];
-
-shuffle.addEventListener('click', () => {
-    let a = shuffle.innerHTML;
-
-    switch (a) {
-        case "next":
-            shuffle.classList.add('bi-arrow-repeat');
-            shuffle.classList.remove('bi-music-note-beamed');
-            shuffle.classList.remove('bi-shuffle');
-            shuffle.innerHTML = 'repeat';
-            break;
-
-        case "repeat":
-            shuffle.classList.remove('bi-arrow-repeat');
-            shuffle.classList.remove('bi-music-note-beamed');
-            shuffle.classList.add('bi-shuffle');
-            shuffle.innerHTML = 'random';
-            break;
-        case "random":
-            shuffle.classList.remove('bi-arrow-repeat');
-            shuffle.classList.add('bi-music-note-beamed');
-            shuffle.classList.remove('bi-shuffle');
-            shuffle.innerHTML = 'next';
-            break;
-    }
-});
-
-
-
-const next_music = () => {
-    if (index == songs.length) {
-        index = 1
-    } else {
-        index++;
-    }
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
-    download_music.href = `assets/audio/${index}.mp3`;
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
-    });
-
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
-        download_music.setAttribute('download', songName);
-    });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    el.target.classList.remove('bi-play-circle-fill');
-    el.target.classList.add('bi-pause-circle-fill');
-    wave.classList.add('active1');
-}
-const repeat_music = () => {
-    index;
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
-    download_music.href = `assets/audio/${index}.mp3`;
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
-    });
-
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
-        download_music.setAttribute('download', songName);
-    });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    el.target.classList.remove('bi-play-circle-fill');
-    el.target.classList.add('bi-pause-circle-fill');
-    wave.classList.add('active1');
-}
-
-const random_music = () => {
-    if (index == songs.length) {
-        index = 1
-    } else {
-        index = Math.floor((Math.random() * songs.length) + 1);
-    }
-    music.src = `assets/audio/${index}.mp3`;
-    poster_master_play.src = `assets/img/${index}.webp`;
-    music.play();
-    masterPlay.classList.remove('bi-play-fill');
-    masterPlay.classList.add('bi-pause-fill');
-    download_music.href = `assets/audio/${index}.mp3`;
-    let songTitles = songs.filter((ele) => {
-        return ele.id == index;
-    });
-
-    songTitles.forEach(item => {
-        let { songName } = item;
-        title.innerHTML = songName;
-        download_music.setAttribute('download', songName);
-    });
-
-    makeAllBackground();
-    Array.from(document.getElementsByClassName('songItem'))[index - 1].style.background = "rgb(105, 105, 105, .1)";
-    makeAllplays();
-    el.target.classList.remove('bi-play-circle-fill');
-    el.target.classList.add('bi-pause-circle-fill');
-    wave.classList.add('active1');
-}
-
-
-
-music.addEventListener('ended', () => {
-    let b = shuffle.innerHTML;
-
-    switch (b) {
-        case 'repeat':
-            repeat_music();
-            break;
-        case 'next':
-            next_music();
-            break;
-        case 'random':
-            random_music();
-            break;
-    }
-})
-

@@ -661,7 +661,7 @@ header .song_side .popular_song .pop_song::-webkit-scrollbar {
   display: none;
 }
 header .song_side .popular_song .pop_song ul {
-  padding: 11px;
+  /* padding: 11px; */
   margin: 0;
 }
 
@@ -669,7 +669,7 @@ header .song_side .popular_song .pop_song li {
   min-width: 100px;
   height: 140px;
   list-style-type: none;
-  margin-right: 10px;
+  margin: 0px 0px 19px 14px ;
   transition: 0.3s linear;
 }
 
