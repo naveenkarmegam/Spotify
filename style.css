@@ -669,7 +669,7 @@ header .song_side .popular_song .pop_song li {
   min-width: 100px;
   height: 140px;
   list-style-type: none;
-  margin: 0px 0px 19px 14px ;
+  margin: 0px 0px 15px 15px ;
   transition: 0.3s linear;
 }
 

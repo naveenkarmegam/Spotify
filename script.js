@@ -107,7 +107,7 @@ const recentlyPlayedSong = (index) => {
     recentlyPlayed.splice(indexOfSong, 1);
   }
   recentlyPlayed.unshift(index);
-  if (recentlyPlayed.length > 3) {
+  if (recentlyPlayed.length > 5) {
     recentlyPlayed.pop();
   }
   updateRecentlyPlayedMenu();
@@ -413,28 +413,28 @@ document.addEventListener("DOMContentLoaded", () => {
     showSearchDisplay();
   });
 });
-
-let pop_song_left = document.getElementById("pop_song_left");
-let pop_song_right = document.getElementById("pop_song_right");
-let pop_song = document.getElementsByClassName("pop_song")[0];
-
-pop_song_right.addEventListener("click", () => {
-  pop_song.scrollLeft += 900;
-});
-pop_song_left.addEventListener("click", () => {
-  pop_song.scrollLeft -= 900;
-});
-
-let pop_art_left = document.getElementById("pop_art_left");
-let pop_art_right = document.getElementById("pop_art_right");
-let Artists_bx = document.getElementsByClassName("pop_song")[1];
-
-pop_art_right.addEventListener("click", () => {
-  Artists_bx.scrollLeft += 900;
-});
-pop_art_left.addEventListener("click", () => {
-  Artists_bx.scrollLeft -= 900;
-});
+function setupScrollHandlers(leftButton, rightButton, scrollContainer, scrollAmount) {
+    rightButton.addEventListener("click", () => {
+      scrollContainer.scrollLeft += scrollAmount;
+    });
+  
+    leftButton.addEventListener("click", () => {
+      scrollContainer.scrollLeft -= scrollAmount;
+    });
+  }
+  
+  let pop_song_left = document.getElementById("pop_song_left");
+  let pop_song_right = document.getElementById("pop_song_right");
+  let pop_song = document.getElementsByClassName("pop_song")[0];
+  
+  setupScrollHandlers(pop_song_left, pop_song_right, pop_song, 590);
+  
+  let pop_art_left = document.getElementById("pop_art_left");
+  let pop_art_right = document.getElementById("pop_art_right");
+  let Artists_bx = document.getElementsByClassName("pop_song")[1];
+  
+  setupScrollHandlers(pop_art_left, pop_art_right, Artists_bx,  590);
+  
 
 // search data start
 let search_results = document.getElementsByClassName("search_results")[0];
